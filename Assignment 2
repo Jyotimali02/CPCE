@@ -1,1 +1,21 @@
-
+P1=int(input(“Enter the value of rainfall at Station 1:”))
+P2= int(input(“Enter the value of rainfall at Station 2:”))
+P3 =int(input(“Enter the value of rainfall at Station 3:”))
+P4 =int(input(“Enter the value of rainfall at Station 4:”))
+P5 =int(input(“Enter the value of rainfall at Station 5:”))
+#Area for each station
+A1= int(input(“Enter the value of Catchment Area for rain gauge station 1:”))
+A2= int(input(“Enter the value of Catchment Area for rain gauge station 2:”))
+A3=int(input(“Enter the value of Catchment Area for rain gauge station 3:”))
+A4=int(input(“Enter the value of Catchment Area for rain gauge station 4:”)) 
+A5= int(input(“Enter the value of Catchment Area for station 5:”))
+A=A1+A2+A3+A4+A5
+Print (“The value of Total Catchment area is:”, A)
+# Runoff Volume
+#The volume shall be multiplied by the coefficient 2500 to cater scale effects
+#Runoff Volume
+V=(p1*A1+p2*A2+p3*A3+p4*A4+p5*A5)*2500
+Print (“The runoff volume from the given catchment is:”, V)
+# Mean Precipitation
+P =(p1*A1+ p2*A2+ p3*A3+ p4*A4+ p5*A5)/A
+Print (“The value of Mean Precipitation is:”, p)
