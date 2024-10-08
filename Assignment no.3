@@ -1,1 +1,16 @@
-
+V = int(input(“Enter the value of design speed (km/h): “)
+R = int(input(“Enter the value of Radius of curvature (m): “))
+N = int(input(“Enter the value of slope: “))
+W = float(input(“Enter the value of width of road including extra widening (m): “))
+Emax = float(input(“Enter the maximum value of super elevation for plain terrain: “))
+# Calculate super elevation (ecal)
+Ecal = (V * V) / (225 * R)
+# Output the calculated super elevation
+If ecal <= emax:
+ Print(“The value of Super elevation:”, ecal)
+Else:
+ Print(“The value of Super elevation:”, emax)
+# Calculate the length of the transition curve (Ls)
+Ls = (emax * N * W) / 2
+# Output the length of the transition curve
+Print(“The length of the transition curve:”, Ls)
