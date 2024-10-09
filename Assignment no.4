@@ -1,1 +1,107 @@
-
+Fck = float(input(“Enter the value of characteristic compressive strength: “))
+# Experimental Determinations
+Gca = float(input(“Enter the value of specific gravity of CA: “))
+Gfa = float(input(“Enter the value of specific gravity of FA: “))
+Gc = float(input(“Enter the value of specific gravity of Cement: “))
+Water_density = float(input(“Enter the value of Water Density: “))
+Agg_size = float(input(“Enter the nominal Size of Aggregate: “))
+Nature_of_agg = input(“Nature of Aggregates: “)
+Slump = float(input(“Enter the value of workability (slump) of concrete: “))
+Admixture = input(“Type of Admixture: “)
+Exposure_condition = input(“Exposure Condition: “)
+Concreting_type = input(“Type of Concreting: “)
+Zone = int(input(“Zone (1 to 4): “))
+# Target Mean Strength (assuming some relationship, may need to adjust formula)
+Sigma = 5 # Just a placeholder value
+Ft = fck + 1.65 * sigma
+Print(“Target Mean Strength: “, ft, “MPa”)
+# Maximum free Water Cement Ratio (based on IS 456:2000)
+If concreting_type == “Plain”:
+ Wc_ratios = {“Mild”: 0.6, “Moderate”: 0.5, “Severe”: 0.5, “Very Severe”: 0.45, “Extreme”: 0.4}
+Else:
+ Wc_ratios = {“Mild”: 0.55, “Moderate”: 0.5, “Severe”: 0.45, “Very Severe”: 0.45, “Extreme”:
+0.4}
+Wc_ratio = wc_ratios[exposure_condition]
+Print(“W/C Ratio: “, wc_ratio)
+# Minimum Cement Content
+If concreting_type == “Plain”:
+ Min_cement_content = {“Mild”: 220, “Moderate”: 240, “Severe”: 250, “Very Severe”: 260,
+“Extreme”: 180}
+Else:
+ Min_cement_content = {“Moderate”: 300, “Severe”: 320, “Very Severe”: 340, “Extreme”:
+360}
+Min_cement = min_cement_content[exposure_condition]
+Print(“Minimum Cement Content: “, min_cement, “kg/m3”)
+# Water Content based on aggregate size
+Water_content = {10: 208, 20: 186, 40: 165}
+Water_content_value = water_content[agg_size]
+# Adjusting water content based on slump
+If slump == 75:
+ Water_content_value += 0
+Elif slump == 100:
+ Water_content_value += water_content_value * 0.03
+Elif slump == 125:
+ Water_content_value += water_content_value * 0.06
+Elif slump == 150:
+ Water_content_value += water_content_value * 0.09
+Elif slump == 175:
+ Water_content_value += water_content_value * 0.12
+Elif slump == 200:
+ Water_content_value += water_content_value * 0.15
+# Adjusting water content based on aggregate nature
+If nature_of_agg == “Sub-Angular”:
+ Water_content_value -= 10
+Elif nature_of_agg == “Gravel”:
+ Water_content_value -= 20
+Elif nature_of_agg == “Round”:
+ Water_content_value -= 25
+# Adjusting for admixtures
+If admixture == “Plasticizer”:
+ Water_content_value *= 0.9
+Elif admixture == “Super-plasticizer”:
+ Water_content_value *= 0.8
+Print(“Water Content: “, water_content_value, “kg/m^3”)
+# Cement Content
+Cement_content = water_content_value / wc_ratio
+If cement_content > 450:
+ Cement_content = 450 # Maximum allowed cement content as per IS 456
+Print(“Cement Content: “, cement_content, “kg/m^3”)
+# Volume Calculations
+Vol_cement = cement_content / (Gc * 1000)
+Vol_water = water_content_value / water_density
+Vol_agg = 1 – (vol_cement + vol_water)
+Print(“Volume of Cement: “, vol_cement, “m^3”)
+Print(“Volume of Water: “, vol_water, “m^3”)
+Print(“Volume of Coarse and Fine Aggregates: “, vol_agg, “m^3”)
+# Zone ID for aggregates
+Zone_id = {
+ 1: {10: 0.44, 20: 0.50, 40: 0.69},
+ 2: {10: 0.46, 20: 0.52, 40: 0.72},
+ 3: {10: 0.48, 20: 0.64, 40: 0.73},
+ 4: {10: 0.50, 20: 0.66, 40: 0.75}
+}
+Fraction = zone_id[zone][agg_size]
+# Adjusting fraction based on W/C ratio
+If wc_ratio == 0.5:
+ Fraction += 0
+Elif wc_ratio == 0.45:
+ Fraction += 0.01 * fraction
+Elif wc_ratio == 0.4:
+ Fraction += 0.02 * fraction
+Elif wc_ratio == 0.55:
+ Fraction -= 0.01 * fraction
+Print(“Coarse Aggregate Fraction: “, fraction)
+# Weight Batching
+Mass_fa = (1 – fraction) * vol_agg
+Mass_ca = fraction * vol_agg
+Print(“Weight Batching:”)
+Print(f”Cement: {cement_content} kg/m^3”)
+Print(f”Mass of Fine Aggregate: {mass_fa} kg/m^3”)
+Print(f”Mass of Coarse Aggregate: {mass_ca} kg/m^3”)
+Print(f”Water Content: {water_content_value} kg/m^3”)
+# Volume Batching
+Print(“Volume Batching:”)
+Print(f”Volume of Cement: {vol_cement} m^3”)
+Print(f”Volume of Fine Aggregate: {mass_fa} m^3”)
+Print(f”Volume of Coarse Aggregate: {mass_ca} m^3”)
+Print(f”Volume of Water: {vol_water} m^3”)
