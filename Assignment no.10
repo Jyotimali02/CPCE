@@ -1,1 +1,97 @@
-
+Tu = float(input("Enter the value of ultimate tensile strength (Tu): "))
+fy = float(input("Enter the value of yield strength of steel (fy): "))
+fu = float(input("Enter the value of ultimate strength of steel (fu): "))
+fub = float(input("Enter the value of ultimate strength of bolt (fub): "))
+Gamma_mo = float(input("Enter the value of partial factor of safety Gamma_mo: "))
+Gamma_m1 = float(input("Enter the value of partial factor of safety Gamma_m1: "))
+Gamma_mb = float(input("Enter the value of partial factor of safety Gamma_mb: "))
+# Gross Area Calculation
+print("Gross Area Required")
+Agreq = (1.1 * Tu * 1000) / fy
+print("The value of gross area required is:", Agreq)
+# Selection of section
+Ag = float(input("Enter the value of gross area of steel (Ag): "))
+t = float(input("Enter the value of least thickness (t): "))
+# Design of connections
+d = float(input("Enter the value of diameter of bolt (d): "))
+do = d + 2
+print("The diameter of bolt hole is:", do)
+# Minimum pitch distance as per IS code
+pmin = 2.5 * d
+print("The minimum pitch distance is:", pmin)
+# Edge distance as per IS 800
+e = 1.5 * d
+print("The edge distance is:", e)
+# Bolt strength calculations
+nn = float(input("Number of shear planes with threads intercepting the shear plane (nn): "))
+ns = float(input("Number of shear planes without threads (ns): "))
+Anb = 0.78 * (0.7854 * d * d)
+print("Threaded area of bolt is:", Anb)
+Asb = 0.7854 * d * d
+print("Plane shank area of bolt is:", Asb)
+Vdsb = (fub / (1.732 * Gamma_mb)) * (nn * Anb + ns * Asb) * 10**-3
+print("The value of Vdsb is:", Vdsb)
+kb1 = e / (3 * do)
+print("Kb1:", kb1)
+kb2 = (pmin / (3 * do)) - 0.25
+print("Kb2:", kb2)
+kb3 = fub / fu
+print("Kb3:", kb3)
+kb4 = 1
+print("Kb4:", kb4)
+kb = min(kb1, kb2, kb3, kb4)
+print("Kb:", kb)
+Vdpb = (2.5 * kb * d * t * fu * 10**-3) / Gamma_mo
+print("Vdpb:", Vdpb)
+Vd = min(Vdsb, Vdpb)
+print("Vd:", Vd)
+N = Tu / Vd
+print("Number of bolts required:", N)
+# Check for strength
+# Criteria 1: Yielding of Gross Section
+Tdg = (Ag * fy * 10**-3) / Gamma_mo
+print("The value of tensile strength due to yielding of gross section is:", Tdg)
+# Criteria 2: Rupture
+Lc1 = float(input("Enter the length of connecting leg (Lc1): "))
+Lol = float(input("Enter the length of outstand leg (Lol): "))
+Anc = (Lc1 - (t / 2) - do) * t
+print("Net Area of Connecting leg is:", Anc)
+Ago = (Lol - (t / 2)) * t
+print("Gross Area of outstand leg is:", Ago)
+Lc = (N - 1) * pmin
+print("Lc:", Lc)
+bs = 0.6 * Lc1 + Lol * t
+print("bs:", bs)
+Beta = 0.076 * (fy / fu) * (bs / Lc) * (Lol / t)
+print("Beta:", Beta)
+# Safety Checks
+if Beta > 1.4:
+print("Not Safe")
+else:
+print("Safe")
+if Beta < 0.7:
+print("Not Safe")
+else:
+print("Safe")
+# Calculation for Tb1 and Tb2
+Avg = (pmin * (N - 1) + e) * t
+print("Avg:", Avg)
+Avn = ((pmin * (N - 1) + e) - ((N - 1) * do + 8.5 * do)) * t
+print("Avn:", Avn)
+Atg = 0.6 * Lc1 * t
+print("Atg:", Atg)
+Atn = Atg - 0.5 * do
+print("Atn:", Atn)
+Tb1 = (((Avg * fy) / (1.732 * Gamma_mo)) + ((0.9 * fu * Atn) / Gamma_m1)) * 10**-3
+print("Tb1:", Tb1)
+Tb2 = (((0.9 * Avn * fu) / (1.732 * Gamma_m1)) + ((Atg * fy) / Gamma_mo)) * 10**-3
+print("Tb2:", Tb2)
+Tb = min(Tb1, Tb2)
+print("Tb:", Tb)
+# Final strength check
+Td = min(Tdg, Tb)
+print("Td:", Td)
+if Td > Tu:
+print("SAFE")
+else:
+print("Revise the Section")
